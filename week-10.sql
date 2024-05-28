@@ -112,3 +112,45 @@ go
 exec SPInsertCustomer 'WOWIL', 'Willy Wonka'
 go
 select * from Customers where CustomerID = 'WOWIL'
+
+
+/*
+Ejercicio 07:
+Crear un procedimiento almacenado que retorne la cantidad de pedidos
+*/
+create procedure SPOrdersQuantity @Quantity int output
+as
+begin
+	set @Quantity = (select count(*) from Orders)
+end
+go
+
+declare @Total int
+exec SPOrdersQuantity @Quantity = @Total output
+print @Total
+go
+
+/*
+Ejercicio 08:
+Crear un procedimiento almacenado que retorne la cantidad de pedidos para un país de destino, ingresado como parámetro.
+*/
+
+create procedure SPOrdersQuantityByCountry 
+	@Country nvarchar(15), @Quantity int output
+as
+begin 
+	set @Quantity = (select count(*) from Orders 
+			where ShipCountry = @Country)
+end
+go
+
+declare @Total int
+exec SPOrdersQuantityByCountry @Country = 'France', @Quantity = @Total output
+print @Total
+go
+
+
+
+
+
+
